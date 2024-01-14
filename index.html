@@ -13,8 +13,8 @@
 
     <script>
         // Default coordinates as a fallback
-        var DEFAULT_LATITUDE = 40.7128;  // Example: New York City latitude
-        var DEFAULT_LONGITUDE = -74.0060;  // Example: New York City longitude
+        var DEFAULT_LATITUDE = 14.47507;  // Example: Kadapa City latitude
+        var DEFAULT_LONGITUDE = 78.82167;  // Example: Kadapa City longitude
 
         // Check if Geolocation is available
         if ("geolocation" in navigator) {
@@ -59,12 +59,53 @@
         var POLE1_LONGITUDE = 78.83552;
         var POLE2_LATITUDE = 14.47113;
         var POLE2_LONGITUDE = 78.83513;
+        var POLE3_LATITUDE = 14.47176;
+        var POLE3_LONGITUDE = 78.83562;
+        var POLE4_LATITUDE = 14.47182;
+        var POLE4_LONGITUDE = 78.83524;
+
+        var TRANSFORMER_LATITUDE_Off_1 = 14.47125;
+        var TRANSFORMER_LONGITUDE_Off_1 = 78.83583;
+        var TRANSFORMER_LATITUDE_Off_2 = 14.47125;
+        var TRANSFORMER_LONGITUDE_Off_2 = 78.83587;
+
+        var POLE1_LATITUDE_Off_1 = 14.47131;
+        var POLE1_LONGITUDE_Off_1 = 78.83548;
+        var POLE1_LATITUDE_Off_2 = 14.47131;
+        var POLE1_LONGITUDE_Off_2 = 78.83556;
+
+        var POLE2_LATITUDE_Off_1 = 14.47133;
+        var POLE2_LONGITUDE_Off_1 = 78.83510;
+        var POLE2_LATITUDE_Off_2 = 14.47133;
+        var POLE2_LONGITUDE_Off_2 = 78.83517;
+
+        var POLE3_LATITUDE_Off_1 = 14.47202;
+        var POLE3_LONGITUDE_Off_1 = 78.83521;
+        var POLE3_LATITUDE_Off_2 = 14.47202;
+        var POLE3_LONGITUDE_Off_2 = 78.83528;
+
+        var POLE4_LATITUDE_Off_1 = 14.47196;
+        var POLE4_LONGITUDE_Off_1 = 78.83559;
+        var POLE4_LATITUDE_Off_2 = 14.47196;
+        var POLE4_LONGITUDE_Off_2 = 78.83565;
 
         // Transformer location
         var transformerLocation = [TRANSFORMER_LATITUDE, TRANSFORMER_LONGITUDE];
+        var transformerLocation_Off_1 = [TRANSFORMER_LATITUDE_Off_1, TRANSFORMER_LONGITUDE_Off_1];
+
         // Poles locations
         var pole1Location = [POLE1_LATITUDE, POLE1_LONGITUDE];
+        var pole1Location_Off_1 = [POLE1_LATITUDE_Off_1, POLE1_LONGITUDE_Off_1];
+
+
         var pole2Location = [POLE2_LATITUDE, POLE2_LONGITUDE];
+        var pole2Location_Off_1 = [POLE2_LATITUDE_Off_1, POLE2_LONGITUDE_Off_1];
+
+        var pole3Location = [POLE3_LATITUDE, POLE3_LONGITUDE];
+        var pole3Location_Off_1 = [POLE3_LATITUDE_Off_1, POLE3_LONGITUDE_Off_1];
+
+        var pole4Location = [POLE4_LATITUDE, POLE4_LONGITUDE];
+        var pole4Location_Off_1 = [POLE4_LATITUDE_Off_1, POLE4_LONGITUDE_Off_1];
 
         // Add transformer marker
         var transformerIcon = L.icon({
@@ -83,10 +124,12 @@
         // Add poles markers
         L.marker(pole1Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 1");
         L.marker(pole2Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 2");
+        L.marker(pole3Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 3");
+        L.marker(pole4Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 4");
 
         // Draw wires
-        var wirePath = [transformerLocation, pole1Location, pole2Location];
-        L.polyline(wirePath, {color: 'red'}).addTo(map);
+        var wirePath = [transformerLocation_Off_1, pole1Location_Off_1, pole2Location_Off_1, pole3Location_Off_1, pole4Location_Off_1];
+        L.polyline(wirePath, {color: 'red'}).addTo(map).bindPopup("CableLength: 35mm");
     }
     </script>
 </body>
