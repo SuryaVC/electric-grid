@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electrical Grid Map MVP</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 800px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        // Default coordinates as a fallback
+        var DEFAULT_LATITUDE = 40.7128;  // Example: New York City latitude
+        var DEFAULT_LONGITUDE = -74.0060;  // Example: New York City longitude
+
+        // Check if Geolocation is available
+        if ("geolocation" in navigator) {
+            var geoOptions = {
+                timeout: 10000, // 10 seconds
+                maximumAge: 60000 // 1 minute
+            };
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                initializeMap(position.coords.latitude, position.coords.longitude);
+            }, function(error) {
+                console.error("Error getting location: ", error);
+                initializeMap(DEFAULT_LATITUDE, DEFAULT_LONGITUDE); // Fallback location
+            }, geoOptions);
+        } else {
+            console.log("Geolocation is not available");
+            initializeMap(DEFAULT_LATITUDE, DEFAULT_LONGITUDE); // Fallback location
+        }
+
+        function initializeMap(latitude, longitude) {
+            // Initialize the map with dynamic latitude and longitude
+            var map = L.map('map').setView([latitude, longitude], 13);
+
+            // Add a tile layer to the map
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+        // Add event listener for double-click event
+        map.on('dblclick', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+            L.popup()
+             .setLatLng(e.latlng)
+             .setContent('Latitude: ' + lat.toFixed(5) + '<br>Longitude: ' + lng.toFixed(5))
+             .openOn(map);
+        });
+        
+        var TRANSFORMER_LATITUDE = 14.47105;
+        var TRANSFORMER_LONGITUDE = 78.83587;
+        var POLE1_LATITUDE = 14.47111;
+        var POLE1_LONGITUDE = 78.83552;
+        var POLE2_LATITUDE = 14.47113;
+        var POLE2_LONGITUDE = 78.83513;
+
+        // Transformer location
+        var transformerLocation = [TRANSFORMER_LATITUDE, TRANSFORMER_LONGITUDE];
+        // Poles locations
+        var pole1Location = [POLE1_LATITUDE, POLE1_LONGITUDE];
+        var pole2Location = [POLE2_LATITUDE, POLE2_LONGITUDE];
+
+        // Add transformer marker
+        var transformerIcon = L.icon({
+            iconUrl: 'transformer.png', // URL to your transformer icon
+            iconSize: [32, 37], // size of the icon
+            iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
+        });
+        L.marker(transformerLocation, {icon: transformerIcon}).addTo(map).bindPopup("Transformer");
+
+        // Add transformer marker
+        var poleIcon = L.icon({
+            iconUrl: 'pole.png', // URL to your pole icon
+            iconSize: [32, 37], // size of the icon
+            iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
+        });
+        // Add poles markers
+        L.marker(pole1Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 1");
+        L.marker(pole2Location, {icon: poleIcon}).addTo(map).bindPopup("Pole 2");
+
+        // Draw wires
+        var wirePath = [transformerLocation, pole1Location, pole2Location];
+        L.polyline(wirePath, {color: 'red'}).addTo(map);
+    }
+    </script>
+</body>
+</html>
